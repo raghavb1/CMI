@@ -73,7 +73,7 @@ EOF
 
 virsh net-create network_config.xml 
 
-virt-install -n svmp_vbox -r 6000 --os-type=linux --disk svmp_system_disk.img,device=disk,bus=virtio -w bridge=virbr100,model= --vnc --noautoconsole --import --vcpus 3 --hvm
+virt-install -n svmp_vbox -r 4000 --os-type=linux --disk svmp_system_disk.img,device=disk,bus=virtio -w bridge=virbr100,model= --vnc --noautoconsole --import --vcpus 2 --hvm
 
 virsh attach-device svmp_vbox data_disk.xml 
 
