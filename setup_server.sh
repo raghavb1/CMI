@@ -26,27 +26,30 @@ xXYOsudR5+4rVuoYedud5Czu69nQCBZ5cniEWcCTYglB7DIswbY8FMlm7dHBldBsrrc6
 -----END RSA PRIVATE KEY-----
 EOF
 
-chmod 400 oval_key.pem
-
-scp -oStrictHostKeyChecking=no -i oval_key.pem ubuntu@54.68.24.31:/mnt/oval/svmp/asop/out/target/product/svmp/svmp_system_disk.img .
-
-scp -oStrictHostKeyChecking=no -i oval_key.pem ubuntu@54.68.24.31:/mnt/oval/svmp/asop/out/target/product/svmp/svmp_data_disk.img .
-
 cat <<EOF >> /etc/libvirt/qemu.conf
 user='root'
 group='root'
 EOF
 
-cat <<EOF >> data_disk.xml
+sudo service libvirt-bin restart
+
+chmod 400 oval_key.pem
+
+scp -oStrictHostKeyChecking=no -i oval_key.pem ubuntu@54.68.24.31:/mnt/oval/svmp/asop/out/target/product/svmp/svmp_data_disk.img .
+
+scp -oStrictHostKeyChecking=no -i oval_key.pem ubuntu@54.68.24.31:/mnt/oval/svmp/asop/out/target/product/svmp/svmp_system_disk.img .
+
+
+cat <<EOF > data_disk.xml
 <disk type='file' device='disk'>
       <driver name='qemu' type='raw'/>
       <source file='/root/svmp_data_disk.img'/>
-      <target dev='vdb’ bus='virtio'/>
+      <target dev='vdb' bus='virtio'/>   
       <alias name='virtio-disk1'/>
     </disk>
 EOF
 
-sudo service libvirt-bin restart
+
 
 virsh destroy svmp_vbox
 virsh undefine svmp_vbox
@@ -72,7 +75,7 @@ cat <<EOF > network_config.xml
 EOF
 
 virsh net-create network_config.xml 
-
+vd
 virt-install -n svmp_vbox -r 4000 --os-type=linux --disk svmp_system_disk.img,device=disk,bus=virtio -w bridge=virbr100,model= --vnc --noautoconsole --import --vcpus 2 --hvm
 
 virsh attach-device svmp_vbox data_disk.xml 
