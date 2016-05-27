@@ -43,7 +43,7 @@ scp -oStrictHostKeyChecking=no -i oval_key.pem ubuntu@54.68.24.31:/mnt/oval/svmp
 cat <<EOF > data_disk.xml
 <disk type='file' device='disk'>
       <driver name='qemu' type='raw'/>
-      <source file='/root/svmp_data_disk.img'/>
+      <source file='/root/svmp_data_disk.qcow2'/>
       <target dev='vdb' bus='virtio'/>   
       <alias name='virtio-disk1'/>
     </disk>
@@ -75,8 +75,8 @@ cat <<EOF > network_config.xml
 EOF
 
 virsh net-create network_config.xml 
-vd
-virt-install -n svmp_vbox -r 4000 --os-type=linux --disk svmp_system_disk.img,device=disk,bus=virtio -w bridge=virbr100,model= --vnc --noautoconsole --import --vcpus 2 --hvm
+
+virt-install -n svmp_vbox -r 4000 --os-type=linux --disk svmp_system_disk.qcow2,device=disk,bus=virtio -w bridge=virbr100,model= --vnc --noautoconsole --import --vcpus 2 --hvm
 
 virsh attach-device svmp_vbox data_disk.xml 
 
