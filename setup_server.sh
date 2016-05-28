@@ -1,4 +1,11 @@
-sudo apt-get -y install qemu-kvm libvirt-bin ubuntu-vm-builder bridge-utils virtinst
+sudo apt-get -y install qemu-kvm libvirt-bin ubuntu-vm-builder bridge-utils virtinst android-tools-adb
+
+cat <<EOF >> /etc/libvirt/qemu.conf
+user='root'
+group='root'
+EOF
+
+sudo service libvirt-bin restart
 
 cat <<EOF >> oval_key.pem
 -----BEGIN RSA PRIVATE KEY-----
@@ -26,23 +33,18 @@ xXYOsudR5+4rVuoYedud5Czu69nQCBZ5cniEWcCTYglB7DIswbY8FMlm7dHBldBsrrc6
 -----END RSA PRIVATE KEY-----
 EOF
 
-cat <<EOF >> /etc/libvirt/qemu.conf
-user='root'
-group='root'
-EOF
 
-sudo service libvirt-bin restart
 
 chmod 400 oval_key.pem
 
-scp -oStrictHostKeyChecking=no -i oval_key.pem ubuntu@54.68.24.31:/mnt/oval/svmp/asop/out/target/product/svmp/svmp_data_disk.img .
+scp -oStrictHostKeyChecking=no -i oval_key.pem ubuntu@54.68.24.31:/mnt/oval/svmp/asop/out/target/product/svmp/svmp_data_disk.qcow2 gold_images/
 
-scp -oStrictHostKeyChecking=no -i oval_key.pem ubuntu@54.68.24.31:/mnt/oval/svmp/asop/out/target/product/svmp/svmp_system_disk.img .
+scp -oStrictHostKeyChecking=no -i oval_key.pem ubuntu@54.68.24.31:/mnt/oval/svmp/asop/out/target/product/svmp/svmp_system_disk.qcow2 gold_images/
 
 
 cat <<EOF > data_disk.xml
 <disk type='file' device='disk'>
-      <driver name='qemu' type='raw'/>
+      <driver name='qemu' type='qcow2'/>
       <source file='/root/svmp_data_disk.qcow2'/>
       <target dev='vdb' bus='virtio'/>   
       <alias name='virtio-disk1'/>
@@ -76,7 +78,7 @@ EOF
 
 virsh net-create network_config.xml 
 
-virt-install -n svmp_vbox -r 4000 --os-type=linux --disk svmp_system_disk.qcow2,device=disk,bus=virtio -w bridge=virbr100,model= --vnc --noautoconsole --import --vcpus 2 --hvm
+virt-install -n svmp_vbox -r 4000 --os-type=linux --disk svmp_system_disk.qcow2,format=qcow2,device=disk,bus=virtio -w bridge=virbr100,model= --vnc --noautoconsole --import --vcpus 2 --hvm  --accelerate
 
 virsh attach-device svmp_vbox data_disk.xml 
 
