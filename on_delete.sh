@@ -2,3 +2,5 @@
 #argument2 - the id of user_volume
 
 scp -oStrictHostKeyChecking=no -i central_server_key.pem root@$1:$2.qcow2 user_disks/
+echo DONE > DONE
+scp -oStrictHostKeyChecking=no -i central_server_key.pem DONE root@$1:
