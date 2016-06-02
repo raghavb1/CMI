@@ -1,7 +1,6 @@
-if [ -z "$1" ]
+if [ -z "$2" ]
   then
-    $1 = "svmp_data_disk"
-    scp -oStrictHostKeyChecking=no -i central_server_key.pem root@10.99.109.129:gold_images/svmp_data_disk.qcow2 .
+    scp -oStrictHostKeyChecking=no -i central_server_key.pem root@10.99.109.129:gold_images/svmp_data_disk.qcow2 $1
  else
     scp -oStrictHostKeyChecking=no -i central_server_key.pem root@10.99.109.129:user_disks/$1.qcow2 .
 fi
