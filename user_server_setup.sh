@@ -70,19 +70,4 @@ virt-install -n svmp_vbox -r 2000 --os-type=linux --disk svmp_system_disk.qcow2,
 virsh destroy svmp_vbox
 virsh start svmp_vbox
 
-sudo iptables -P INPUT ACCEPT
-sudo iptables -P FORWARD ACCEPT
-sudo iptables -P OUTPUT ACCEPT
-
-sudo iptables -t nat -F
-sudo iptables -t mangle -F
-sudo iptables -F
-sudo iptables -X
-
-sudo iptables -A PREROUTING -t nat -i bond0 -p tcp --dport 8001 -j DNAT --to 192.168.122.58:8001
-
-sudo iptables -A FORWARD -p tcp -d 192.168.122.58 --dport 8001 -j ACCEPT
-
-sudo iptables -t nat -A POSTROUTING -o bond0 -j MASQUERADE
-
 echo KVM > KVM
