@@ -16,6 +16,6 @@ EOF
 
 virsh attach-device svmp_vbox data_disk.xml
 
-echo KVM > KVM
+echo USERS > USERS
 
 
