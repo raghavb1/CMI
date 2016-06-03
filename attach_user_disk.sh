@@ -14,6 +14,8 @@ cat <<EOF > data_disk.xml
     </disk>
 EOF
 
+sleep 5s
+
 virsh attach-device svmp_vbox data_disk.xml
 
 sudo iptables -P INPUT ACCEPT
