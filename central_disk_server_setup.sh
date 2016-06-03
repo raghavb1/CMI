@@ -34,6 +34,6 @@ scp -oStrictHostKeyChecking=no -i oval_key.pem ubuntu@54.68.24.31:/mnt/oval/svmp
 
 cd ~/cloud_management_interface/scripts
 rm -rf *
-wget "https://github.com/raghavb1/CMI/edit/master/user_server_setup.sh"
-wget "https://github.com/raghavb1/CMI/edit/master/attach_user_disk.sh"
-wget "https://github.com/raghavb1/CMI/edit/master/on_delete.sh"
+wget "https://raw.githubusercontent.com/raghavb1/CMI/master/user_server_setup.sh"
+wget "https://raw.githubusercontent.com/raghavb1/CMI/master/attach_user_disk.sh"
+wget "https://raw.githubusercontent.com/raghavb1/CMI/master/on_delete.sh"
