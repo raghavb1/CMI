@@ -3,4 +3,4 @@
 
 scp -oStrictHostKeyChecking=no -i central_server_key.pem root@$1:$2.qcow2 user_disks/
 echo UPLOAD > UPLOAD
-scp -oStrictHostKeyChecking=no -i central_server_key.pem DONE root@$1:
+scp -oStrictHostKeyChecking=no -i central_server_key.pem UPLOAD root@$1:
