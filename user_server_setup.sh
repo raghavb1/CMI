@@ -83,3 +83,4 @@ sudo iptables -A FORWARD -p tcp -d 192.168.122.58 --dport 8001 -j ACCEPT
 
 sudo iptables -t nat -A POSTROUTING -o bond0 -j MASQUERADE
 
+echo USER > USER
