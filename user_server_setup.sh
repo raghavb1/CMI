@@ -70,8 +70,8 @@ virsh  net-destroy svmp
 
 virsh net-create network_config.xml 
 
-virt-install -n svmp_vbox -r 2000 --os-type=linux --disk svmp_system_disk.qcow2,format=qcow2,device=disk,bus=virtio -w bridge=virbr100,model= --vnc --noautoconsole --import --vcpus 2 --hvm  --accelerate
-
-sleep 60s
+# virt-install -n svmp_vbox -r 2000 --os-type=linux --disk svmp_system_disk.qcow2,format=qcow2,device=disk,bus=virtio -w bridge=virbr100,model= --vnc --noautoconsole --import --vcpus 2 --hvm  --accelerate
+#virsh attach-device svmp_vbox data_disk.xml
+#sleep 60s
 
 echo KVM > KVM
