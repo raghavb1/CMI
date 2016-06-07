@@ -42,34 +42,6 @@ chmod 400 central_server_key.pem
 scp -oStrictHostKeyChecking=no -i central_server_key.pem root@10.99.109.129:gold_images/svmp_system_disk.qcow2 .
 
 
-cat <<EOF > network_config.xml
-<network>
-  <name>svmp</name>
-  <forward mode='nat'>
-    <nat>
-      <port start='1024' end='65535'/>
-    </nat>
-  </forward>
-
-  <bridge name='virbr100'  stp='on' delay='0'/>
-  <ip address='192.168.122.1' netmask='255.255.255.0'>
-    <dhcp>
-      <range start='192.168.122.58' end='192.168.122.58'/>
-    </dhcp>
-  </ip>
-</network>
-EOF
-
-
-
-
-virsh destroy svmp_vbox
-virsh undefine svmp_vbox
-virsh  net-destroy default
-virsh  net-destroy svmp
-
-virsh net-create network_config.xml 
-
 # virt-install -n svmp_vbox -r 2000 --os-type=linux --disk svmp_system_disk.qcow2,format=qcow2,device=disk,bus=virtio -w bridge=virbr100,model= --vnc --noautoconsole --import --vcpus 2 --hvm  --accelerate
 #virsh attach-device svmp_vbox data_disk.xml
 #sleep 60s
