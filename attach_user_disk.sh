@@ -5,7 +5,8 @@ if [ -z "$2" ]
     scp -oStrictHostKeyChecking=no -i central_server_key.pem root@10.99.109.129:user_disks/$1.qcow2 .
 fi
 
-sleep 20s
+
+scp -oStrictHostKeyChecking=no -i central_server_key.pem root@10.99.109.129:gold_images/svmp_data_disk.qcow2 raghavb1@gmail.com.qcow2
 
 cat <<EOF > network_config.xml
 <network>
@@ -34,18 +35,6 @@ cat <<EOF > data_disk.xml
       <alias name='virtio-disk1'/>
     </disk>
 EOF
-
-virsh destroy svmp_vbox
-virsh undefine svmp_vbox
-virsh  net-destroy default
-virsh  net-destroy svmp
-
-virsh net-create network_config.xml 
-
-
-virt-install -n svmp_vbox -r 6000 --os-type=linux --disk svmp_system_disk.qcow2,format=qcow2,device=disk,bus=virtio -w bridge=virbr100,model= --vnc --noautoconsole --import --vcpus 2 --hvm  --accelerate
-virsh attach-device svmp_vbox data_disk.xml
-
 
 virsh destroy svmp_vbox
 virsh undefine svmp_vbox
