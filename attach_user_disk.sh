@@ -47,8 +47,17 @@ virsh net-create network_config.xml
 virt-install -n svmp_vbox -r 6000 --os-type=linux --disk svmp_system_disk.qcow2,format=qcow2,device=disk,bus=virtio -w bridge=virbr100,model= --vnc --noautoconsole --import --vcpus 2 --hvm  --accelerate
 virsh attach-device svmp_vbox data_disk.xml
 
+sleep 5s
 
+virsh destroy svmp_vbox
+virsh undefine svmp_vbox
+virsh  net-destroy default
+virsh  net-destroy svmp
 
+virsh net-create network_config.xml 
+
+virt-install -n svmp_vbox -r 6000 --os-type=linux --disk svmp_system_disk.qcow2,format=qcow2,device=disk,bus=virtio -w bridge=virbr100,model= --vnc --noautoconsole --import --vcpus 2 --hvm  --accelerate
+virsh attach-device svmp_vbox data_disk.xml
 # sudo iptables -P INPUT ACCEPT
 # sudo iptables -P FORWARD ACCEPT
 # sudo iptables -P OUTPUT ACCEPT
