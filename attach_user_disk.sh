@@ -5,22 +5,21 @@ if [ -z "$2" ]
     scp -oStrictHostKeyChecking=no -i central_server_key.pem root@10.99.109.129:user_disks/$1.qcow2 .
 fi
 
-scp -oStrictHostKeyChecking=no -i central_server_key.pem root@10.99.109.129:gold_images/svmp_data_disk.qcow2 .
 
 cat <<EOF > data_disk.xml
 <disk type='file' device='disk'>
       <driver name='qemu' type='qcow2'/>
-      <source file='/root/svmp_data_disk.qcow2'/>
+      <source file='/root/$1.qcow2'/>
       <target dev='vdb' bus='virtio'/>   
       <alias name='virtio-disk1'/>
     </disk>
 EOF
 
-sleep 2s
 
+virt-install -n svmp_vbox -r 6000 --os-type=linux --disk svmp_system_disk.qcow2,format=qcow2,device=disk,bus=virtio -w bridge=virbr100,model= --vnc --noautoconsole --import --vcpus 2 --hvm  --accelerate
 virsh attach-device svmp_vbox data_disk.xml
 
-sleep 10s
+#sleep 10s
 
 sudo iptables -P INPUT ACCEPT
 sudo iptables -P FORWARD ACCEPT
