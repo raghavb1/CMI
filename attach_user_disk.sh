@@ -15,6 +15,7 @@ cat <<EOF > data_disk.xml
     </disk>
 EOF
 
+sleep 3s
 
 virt-install -n svmp_vbox -r 6000 --os-type=linux --disk svmp_system_disk.qcow2,format=qcow2,device=disk,bus=virtio -w bridge=virbr100,model= --vnc --noautoconsole --import --vcpus 2 --hvm  --accelerate
 virsh attach-device svmp_vbox data_disk.xml
