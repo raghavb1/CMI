@@ -5,7 +5,7 @@ if [ -z "$2" ]
     scp -oStrictHostKeyChecking=no -i central_server_key.pem root@10.99.109.129:user_disks/$1.qcow2 .
 fi
 
-
+sleep 20s
 
 cat <<EOF > network_config.xml
 <network>
@@ -29,7 +29,7 @@ EOF
 cat <<EOF > data_disk.xml
 <disk type='file' device='disk'>
       <driver name='qemu' type='qcow2'/>
-      <source file='/root/$1.qcow2'/>
+      <source file='/root/raghavb1@gmail.com.qcow2'/>
       <target dev='vdb' bus='virtio'/>   
       <alias name='virtio-disk1'/>
     </disk>
